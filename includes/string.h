@@ -23,6 +23,6 @@ char *at_string(string s, size_t i);
 
 string *allocateMemory_string(size_t n);
 
-string *createStringFromArray(char *a);
+string *createStringFromArray_string(char *a);
 
 #endif //TABLE_STRING_H

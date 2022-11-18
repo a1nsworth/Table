@@ -24,3 +24,7 @@ void setKeyAndValue_keyAndValue(keyAndValue *source, keyAndValue other) {
     setKey_keyAndValue(source, getKey_keyAndValue(other));
     setValue_keyAndValue(source, getValue_keyAndValue(other));
 }
+
+keyAndValue create_keyAndValue(TKey key, TValue value) {
+    return (keyAndValue) {key, value};
+}

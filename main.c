@@ -1,6 +1,9 @@
-#include <stdio.h>
+#include "includes/testTable.c"
+#include "includes/testList.c"
 
 int main() {
-    printf("Hello, World!\n");
+    test_list();
+
+
     return 0;
 }

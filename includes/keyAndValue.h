@@ -25,4 +25,6 @@ void setValue_keyAndValue(keyAndValue *source, TValue value);
 
 void setKeyAndValue_keyAndValue(keyAndValue *source, keyAndValue other);
 
+keyAndValue create_keyAndValue(TKey key, TValue value);
+
 #endif //TABLE_KEYANDVALUE_H
