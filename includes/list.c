@@ -83,14 +83,15 @@ void pushFront_list(list *l, keyAndValue kv) {
     setNext_node(nodeForPush, NULL);
 
     if (empty_list(*l)) {
-        setEnd_list(l, nodeForPush);
-        setCurrent_list(l, nodeForPush);
-    } else {
-        setNext_node(nodeForPush, getLinkBegin_list(*l));
         setBegin_list(l, nodeForPush);
         setEnd_list(l, nodeForPush);
+    } else {
+        setNext_node(nodeForPush, getLinkBegin_list(*l));
+        setEnd_list(l, getLinkBegin_list(*l));
+        setBegin_list(l, nodeForPush);
     }
 
+    setCurrent_list(l, nodeForPush);
     setSize_list(l, getSize_list(*l) + 1);
 }
 
@@ -126,7 +127,7 @@ void insert_list(list *l, keyAndValue kv, size_t index) {
         node *nodeForPush = allocateMemory_node();
         setPair_node(nodeForPush, kv);
 
-        node *last = getLinkNodeByIndex_list(*l, index);
+        node *last = getLinkNodeByIndex_list(*l, index - 1);
         node *next = getLinkNext_node(*last);
 
         setNext_node(nodeForPush, next);
@@ -151,7 +152,7 @@ void output_list(list l, void (*outputFunc)(keyAndValue)) {
     }
 }
 
-list *createFromArray(keyAndValue *a, size_t n) {
+list *createFromArray_list(keyAndValue *a, size_t n) {
     list *l = (list *) malloc(sizeof(list));
     *l = createEmpty_list();
 

@@ -56,6 +56,6 @@ void free_list(list *l);
 
 void output_list(list l, void(*outputFunc)(keyAndValue kv));
 
-list *createFromArray(keyAndValue *a, size_t n);
+list *createFromArray_list(keyAndValue *a, size_t n);
 
 #endif //TABLE_LIST_H

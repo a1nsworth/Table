@@ -89,24 +89,26 @@ void test_pushFront_addTwoElements() {
     setNext_node(expected1, expected2);
     setPair_node(expected2, create_keyAndValue((string) {(char[]) {"42"}}, 2));
     setNext_node(expected2, NULL);
+
     // Act
     pushFront_list(&actual, getPair_node(*expected1));
     pushFront_list(&actual, getPair_node(*expected2));
 
     // Asserts
     assert(strcmp(getKey_keyAndValue(getPair_node(getCurrent_list(actual))).data,
-                  getPair_node((*expected1)).key.data) ==
-           0);
-    assert(getValue_keyAndValue(getPair_node(getCurrent_list(actual))) ==
-           getValue_keyAndValue(getPair_node((*expected1))));
-
-    moveCurrentToNext_list(&actual);
-
-    assert(strcmp(getKey_keyAndValue(getPair_node(getCurrent_list(actual))).data,
                   getPair_node((*expected2)).key.data) ==
            0);
     assert(getValue_keyAndValue(getPair_node(getCurrent_list(actual))) ==
            getValue_keyAndValue(getPair_node((*expected2))));
+
+    moveCurrentToNext_list(&actual);
+
+    assert(strcmp(getKey_keyAndValue(getPair_node(getCurrent_list(actual))).data,
+                  getKey_keyAndValue(getPair_node((*expected1))).data) ==
+           0);
+    assert(getValue_keyAndValue(getPair_node(getCurrent_list(actual))) ==
+           getValue_keyAndValue(getPair_node((*expected1))));
+
     assert(getLinkNext_node(*getLinkNext_node(getBegin_list(actual))) == NULL);
     assert(getSize_list(actual) == 2);
 }
@@ -118,12 +120,83 @@ void test_pushFront() {
 
 void test_insert_middle() {
     // Arrange
-
+    list *expected = createFromArray_list((keyAndValue[]) {{{(char[]) {"C"}}, 1},
+                                                           {{(char[]) {"+"}}, 1},
+                                                           {{(char[]) {"+"}}, 1}}, 3);
+    list *actual = createFromArray_list((keyAndValue[]) {{{(char[]) {"C"}}, 1},
+                                                         {{(char[]) {"+"}}, 1}}, 2);
     // Act
-    // Asserts
-}
-void test_insert() {
+    insert_list(actual, create_keyAndValue((TKey) {(char[]) {"+"}, 1}, 1), 1);
 
+    // Asserts
+    assert(getSize_list((*expected)) == getSize_list((*actual)));
+    for (register size_t i = 0; i < getSize_list(*actual); ++i) {
+        assert(strcmp(getKey_keyAndValue(getPair_node(getCurrent_list((*expected)))).data,
+                      getKey_keyAndValue(getPair_node(getCurrent_list((*actual)))).data) == 0);
+
+        moveCurrentToNext_list(expected);
+        moveCurrentToNext_list(actual);
+    }
+}
+
+void test_insert_preBegin() {
+    // Arrange
+    list *expected = createFromArray_list((keyAndValue[]) {
+            {{(char[]) {"C"}},    2},
+            {{(char[]) {"C+"}},   3},
+            {{(char[]) {"C++"}},  4},
+            {{(char[]) {"C+++"}}, 5},
+            {{(char[]) {"C#"}},   6}}, 5);
+    list *actual = createFromArray_list((keyAndValue[]) {
+            {{(char[]) {"C"}},    2},
+            {{(char[]) {"C++"}},  4},
+            {{(char[]) {"C+++"}}, 5},
+            {{(char[]) {"C#"}},   6}}, 4);;
+    // Act
+    insert_list(actual, create_keyAndValue((TKey) {(char[]) {"C+"}, 2}, 3), 1);
+
+    // Asserts
+    assert(getSize_list((*expected)) == getSize_list((*actual)));
+    for (register size_t i = 0; i < getSize_list(*expected); ++i) {
+        assert(strcmp(getKey_keyAndValue(getPair_node(getCurrent_list((*expected)))).data,
+                      getKey_keyAndValue(getPair_node(getCurrent_list((*actual)))).data) == 0);
+
+        moveCurrentToNext_list(expected);
+        moveCurrentToNext_list(actual);
+    }
+}
+
+void test_insert_preLast() {
+    // Arrange
+    list *expected = createFromArray_list((keyAndValue[]) {
+            {{(char[]) {"C"}},    2},
+            {{(char[]) {"C+"}},   3},
+            {{(char[]) {"C++"}},  4},
+            {{(char[]) {"C+++"}}, 5},
+            {{(char[]) {"C#"}},   6}}, 5);
+    list *actual = createFromArray_list((keyAndValue[]) {
+            {{(char[]) {"C"}},   2},
+            {{(char[]) {"C+"}},  3},
+            {{(char[]) {"C+++"}}, 5},
+            {{(char[]) {"C#"}},  6}}, 4);;
+    // Act
+    insert_list(actual, create_keyAndValue((TKey) {(char[]) {"C++"}, 4}, 3), 2);
+
+    // Asserts
+    assert(getSize_list((*expected)) == getSize_list((*actual)));
+    for (register size_t i = 0; i < getSize_list((*actual)); ++i) {
+        assert(strcmp(getKey_keyAndValue(getPair_node(getCurrent_list((*expected)))).data,
+                      getKey_keyAndValue(getPair_node(getCurrent_list((*actual)))).data) == 0);
+
+        moveCurrentToNext_list(expected);
+        moveCurrentToNext_list(actual);
+    }
+}
+
+void test_insert() {
+    test_insert_middle();
+    test_insert_preBegin();
+    test_insert_preLast();
 }
 
 void test_list() {
