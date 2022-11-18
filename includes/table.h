@@ -17,6 +17,8 @@ bool containKey_table(table t, TKey key, int(*cmp)(TKey, TKey));
 
 void add_table(table *t, keyAndValue kv, int(*cmp)(TKey, TKey));
 
+void pop_table(table *t, TKey key, int(*cmp)(TKey, TKey));
+
 table *input_table(size_t n, void (*inputTKey)(TKey *), void (*inputTValue)(TValue *), int(*cmp)(TKey, TKey));
 
 table *createFromArray_table(keyAndValue *a, size_t n, int(*cmp)(TKey, TKey));

@@ -31,7 +31,7 @@ void add_table(table *t, keyAndValue kv, int (*cmp)(TKey, TKey)) {
 
         if (indexForInsert == 0) {
             pushFront_list(t, kv);
-            setCurrent_list(t, getLinkNext_node(getBegin_list(*t)));
+            setCurrent_list(t, getLinkBegin_list(*t));
         } else if (indexForInsert == getSize_list(*t)) {
             pushBack_list(t, kv);
         } else {
@@ -45,6 +45,8 @@ void add_table(table *t, keyAndValue kv, int (*cmp)(TKey, TKey)) {
 
             setSize_list(t, getSize_list(*t) + 1);
         }
+    } else if (empty_list(*t)) {
+        pushBack_list(t, kv);
     }
 }
 
@@ -88,4 +90,10 @@ bool areEqual_table(table t1, table t2, int (*cmp)(keyAndValue, keyAndValue)) {
     }
 
     return true;
+}
+
+void pop_table(table *t, TKey key, int (*cmp)(TKey, TKey)) {
+    if (!empty_list(*t) && containKey_table(*t, key, cmp)) {
+        pop_list(t, getIndexKey_table(*t, key, cmp));
+    }
 }

@@ -52,6 +52,12 @@ void pushBack_list(list *l, keyAndValue kv);
 
 void insert_list(list *l, keyAndValue kv, size_t index);
 
+void popFront_list(list *l);
+
+void popBack_list(list *l);
+
+void pop_list(list *l, size_t index);
+
 void free_list(list *l);
 
 void output_list(list l, void(*outputFunc)(keyAndValue kv));

@@ -87,7 +87,6 @@ void pushFront_list(list *l, keyAndValue kv) {
         setEnd_list(l, nodeForPush);
     } else {
         setNext_node(nodeForPush, getLinkBegin_list(*l));
-        setEnd_list(l, getLinkBegin_list(*l));
         setBegin_list(l, nodeForPush);
     }
 
@@ -161,4 +160,63 @@ list *createFromArray_list(keyAndValue *a, size_t n) {
     }
 
     return l;
+}
+
+void popFront_list(list *l) {
+    if (!empty_list((*l))) {
+        if (getSize_list((*l)) > 1) {
+            node *n = getLinkBegin_list(*l);
+            setBegin_list(l, getLinkNext_node(*n));
+            setCurrent_list(l, getLinkBegin_list(*l));
+            free_node(n);
+        } else {
+            free_node(getLinkBegin_list(*l));
+            setBegin_list(l, NULL);
+            setEnd_list(l, NULL);
+            setCurrent_list(l, NULL);
+        }
+
+        setSize_list(l, getSize_list(*l) - 1);
+    }
+}
+
+void popBack_list(list *l) {
+    if (!empty_list((*l))) {
+        if (getSize_list((*l)) > 1) {
+            node *n = getLinkNodeByIndex_list(*l, getSize_list((*l)) - 2);
+            free_node(getLinkEnd_list(*l));
+            setEnd_list(l, n);
+        } else {
+            free_node(getLinkEnd_list(*l));
+            setBegin_list(l, NULL);
+            setEnd_list(l, NULL);
+            setCurrent_list(l, NULL);
+        }
+
+        setSize_list(l, getSize_list(*l) - 1);
+    }
+}
+
+void pop_list(list *l, size_t index) {
+    if (getSize_list(*l) <= index) {
+        fprintf(stderr, "out of range, bad index");
+        exit(2);
+    }
+
+    if (!empty_list((*l))) {
+        if (index == 0) {
+            popFront_list(l);
+        } else if (index == getSize_list((*l)) - 1) {
+            popBack_list(l);
+        } else {
+            node *last = getLinkNodeByIndex_list(*l, index - 1);
+            node *nodeForPop = getLinkNext_node(*last);
+            node *next = getLinkNext_node(*nodeForPop);
+
+            free(nodeForPop);
+            setNext_node(last, next);
+
+            setSize_list(l, getSize_list((*l)) - 1);
+        }
+    }
 }

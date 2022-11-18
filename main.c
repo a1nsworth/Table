@@ -2,7 +2,7 @@
 #include "includes/testList.c"
 
 int main() {
-    test_list();
+    test_table();
 
 
     return 0;
