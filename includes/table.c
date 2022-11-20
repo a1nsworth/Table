@@ -22,7 +22,8 @@ keyAndValue getKeyAndValueByKey_table(table t, TKey key, int (*cmp)(TKey, TKey))
 }
 
 bool containKey_table(table t, TKey key, int (*cmp)(TKey, TKey)) {
-    return !empty_list(t) && cmp(key, getKey_keyAndValue(getKeyAndValueByKey_table(t, key, cmp))) == 0;
+    return !empty_list(t) && getIndexKey_table(t, key, cmp) != getSize_list(t) &&
+           cmp(key, getKey_keyAndValue(getKeyAndValueByKey_table(t, key, cmp))) == 0;
 }
 
 void add_table(table *t, keyAndValue kv, int (*cmp)(TKey, TKey)) {
@@ -35,7 +36,7 @@ void add_table(table *t, keyAndValue kv, int (*cmp)(TKey, TKey)) {
         } else if (indexForInsert == getSize_list(*t)) {
             pushBack_list(t, kv);
         } else {
-            node *lastNode = getLinkNodeByIndex_list(*t, indexForInsert);
+            node *lastNode = getLinkNodeByIndex_list(*t, indexForInsert - 1);
             node *nextNode = getLinkNext_node(*lastNode);
             node *nodeForInsert = allocateMemory_node();
             setPair_node(nodeForInsert, kv);
@@ -96,4 +97,21 @@ void pop_table(table *t, TKey key, int (*cmp)(TKey, TKey)) {
     if (!empty_list(*t) && containKey_table(*t, key, cmp)) {
         pop_list(t, getIndexKey_table(*t, key, cmp));
     }
+}
+
+int compareTKeys(TKey key1, TKey key2) {
+    return strcmp(key1.data, key2.data);
+}
+
+void setValueByKey_table(table *t, TKey key, TValue value, int (*cmp)(TKey, TKey)) {
+    if (!empty_list(*t)) {
+        if (containKey_table(*t, key, cmp)) {
+            int indexFindElement = getIndexKey_table(*t, key, cmp);
+            setValue_keyAndValue(&(getLinkNodeByIndex_list(*t, indexFindElement)->pair), value);
+        }
+    }
+}
+
+bool isDigit(char c) {
+    return c <= '9' && c >= '0';
 }

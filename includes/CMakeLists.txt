@@ -4,4 +4,6 @@ add_library(includes
         node.c
         list.c
         table.c
-        testList.c)
+        task.c
+        testList.c
+        testTable.c)

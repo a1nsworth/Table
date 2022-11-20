@@ -19,18 +19,17 @@ char *at_string(string s, size_t i) {
 string *allocateMemory_string(size_t n) {
     string *s = (string *) malloc(sizeof(string));
     s->data = (char *) malloc(n * sizeof(char));
-    s->size = 0;
+    s->size = n;
 
     return s;
 }
 
-string *createStringFromArray(char *a) {
-    string *string = allocateMemory_string(strlen(a));
+string *createStringFromArray_string(char *a, bool existZeroSymbol) {
+    string *string = allocateMemory_string(strlen(a) + !existZeroSymbol);
 
-    while (*a != '\0') {
-        *string->data = *a;
+    for (register size_t i = 0; i < string->size; ++i) {
+        (*string).data[i] = *a;
 
-        string->data++;
         a++;
     }
 
